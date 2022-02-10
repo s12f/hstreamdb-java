@@ -13,7 +13,6 @@ public class CreateSubscriptionExample {
     // create a subscription which consume data from the tail of the stream.
     Subscription subscriptionFromEarlist =
         Subscription.newBuilder().subscription(DEMO_SUBSCRIPTION).stream(DEMO_STREAM)
-            .offset(new SubscriptionOffset(SubscriptionOffset.SpecialOffset.EARLIEST))
             .ackTimeoutSeconds(600)
             .build();
     client.createSubscription(subscriptionFromEarlist);
@@ -21,7 +20,6 @@ public class CreateSubscriptionExample {
     // create a subscription which consume data from the tail of the stream.
     Subscription subscriptionFromLatest =
         Subscription.newBuilder().subscription(DEMO_SUBSCRIPTION).stream(DEMO_STREAM)
-            .offset(new SubscriptionOffset(SubscriptionOffset.SpecialOffset.LATEST))
             .ackTimeoutSeconds(600)
             .build();
     client.createSubscription(subscriptionFromLatest);
@@ -29,7 +27,6 @@ public class CreateSubscriptionExample {
     // create a subscription which consume data from specified RecordId.
     Subscription subscription =
         Subscription.newBuilder().subscription(DEMO_SUBSCRIPTION).stream(DEMO_STREAM)
-            .offset(new SubscriptionOffset(new RecordId(1, 2)))
             .ackTimeoutSeconds(600)
             .build();
     client.createSubscription(subscription);

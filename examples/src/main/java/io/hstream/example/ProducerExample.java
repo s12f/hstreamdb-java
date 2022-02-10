@@ -1,6 +1,7 @@
 package io.hstream.example;
 
 import io.hstream.*;
+import io.hstream.Record;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
@@ -11,15 +12,22 @@ public class ProducerExample {
 
   public static void main(String[] args) {
     HStreamClient client = HStreamClient.builder().serviceUrl(SERVICE_URL).build();
+    client.createStream(DEMO_STREAM);
 
-    Producer producer =
-        client.newProducer().stream(DEMO_STREAM).enableBatch().recordCountLimit(1000).build();
-
-    Random random = new Random();
-    byte[] rawRecord = new byte[100];
-    for (int i = 0; i < 1000; ++i) {
-      random.nextBytes(rawRecord);
-      CompletableFuture<RecordId> future = producer.write(rawRecord);
-    }
+    System.out.println("-------------------");
+    BufferedProducer producer =
+        client.newBufferedProducer().stream(DEMO_STREAM).recordCountLimit(10).flushIntervalMs(100).build();
+    producer.close();
+    System.out.println("===================");
+//    try (BufferedProducer producer =
+//        client.newBufferedProducer().stream(DEMO_STREAM).recordCountLimit(1000).build()) {
+//      Random random = new Random();
+//      byte[] rawRecord = new byte[100];
+//      for (int i = 0; i < 1000; ++i) {
+//        random.nextBytes(rawRecord);
+//        CompletableFuture<RecordId> future =
+//            producer.write(Record.newBuilder().rawRecord(rawRecord).build());
+//      }
+//    }
   }
 }

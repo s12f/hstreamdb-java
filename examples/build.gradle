@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.hstream:hstreamdb-java:0.6.0'
+    implementation 'io.hstream:hstreamdb-java:0.7.0'
 }
 
 application {
     // Define the main class for the application.
-    mainClass = 'io.hstream.example.ConsumerExample'
+    mainClass = 'io.hstream.example.ProducerExample'
 }
