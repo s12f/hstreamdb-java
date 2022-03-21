@@ -31,21 +31,22 @@ public class RecordUtils {
   }
 
   public static HStreamRecord buildHStreamRecordFromHRecord(HRecord hRecord) {
-    try {
+    // try {
       HStreamRecordHeader header =
           HStreamRecordHeader.newBuilder()
               .setFlag(HStreamRecordHeader.Flag.JSON)
               .setKey(DefaultSettings.DEFAULT_ORDERING_KEY)
               .build();
-      String json = JsonFormat.printer().print(hRecord.getDelegate());
-      logger.debug("hrecord to json: {}", json);
+//       String json = JsonFormat.printer().print(hRecord.getDelegate());
+      // logger.debug("hrecord to json: {}", json);
       return HStreamRecord.newBuilder()
           .setHeader(header)
-          .setPayload(ByteString.copyFrom(json, StandardCharsets.UTF_8))
+//          .setPayload(ByteString.copyFrom(json, StandardCharsets.UTF_8))
+          .setPayload(hRecord.getPayloadCache())
           .build();
-    } catch (InvalidProtocolBufferException e) {
-      throw new HStreamDBClientException.InvalidRecordException("hrecord to json error", e);
-    }
+    // } catch (InvalidProtocolBufferException e) {
+    //   throw new HStreamDBClientException.InvalidRecordException("hrecord to json error", e);
+    // }
   }
 
   public static HStreamRecord buildHStreamRecordFromRecord(Record record) {

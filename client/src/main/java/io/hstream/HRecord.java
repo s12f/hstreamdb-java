@@ -2,17 +2,25 @@ package io.hstream;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.Struct;
+import com.google.protobuf.util.JsonFormat;
+import java.nio.charset.StandardCharsets;
 
 /** A data structure like json object. */
 public class HRecord {
 
   private Struct delegate;
+  private ByteString payloadCache;
 
   public static HRecordBuilder newBuilder() {
     return new HRecordBuilder();
   }
 
   public HRecord(Struct delegate) {
+    try {
+      String json = JsonFormat.printer().print(delegate);
+      this.payloadCache = ByteString.copyFrom(json, StandardCharsets.UTF_8);
+      System.out.printf("payload size:%d%n", payloadCache.size());
+    } catch (Exception e) {}
     this.delegate = delegate;
   }
 
@@ -54,5 +62,9 @@ public class HRecord {
 
   public ByteString toByteString() {
     return delegate.toByteString();
+  }
+
+  public ByteString getPayloadCache() {
+    return payloadCache;
   }
 }
